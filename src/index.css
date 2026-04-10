@@ -1,0 +1,49 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+/* ---------- Light Theme ---------- */
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+
+  --color-primary: #C0392B;        /* deep ember red */
+  --color-primary-content: #ffffff;
+
+  --color-secondary: #E67E22;      /* burnt orange */
+  --color-secondary-content: #ffffff;
+
+  --color-accent: #F5C518;         /* warm gold */
+  --color-accent-content: #111827;
+
+  --color-neutral: #2C2C2C;        /* charcoal */
+  --color-neutral-content: #F5F5F0;
+
+  --color-base-100: #FFFDF7;       /* warm cream white */
+  --color-base-200: #F2EFE6;       /* parchment */
+  --color-base-300: #E0D9CC;       /* warm grey */
+  --color-base-content: #1A1208;   /* near-black, warm tone */
+
+}
+
+/* ---------- Dark Theme ---------- */
+@plugin "daisyui/theme" {
+  name: "dark";
+
+  --color-primary: #E74C3C;        /* brighter red for dark bg */
+  --color-primary-content: #ffffff;
+
+  --color-secondary: #F39C12;      /* amber */
+  --color-secondary-content: #1A1208;
+
+  --color-accent: #F5C518;         /* warm gold */
+  --color-accent-content: #1A1208;
+
+  --color-neutral: #3D3D3D;
+  --color-neutral-content: #F5F5F0;
+
+  --color-base-100: #1A1208;       /* deep warm black */
+  --color-base-200: #2A1F10;       /* dark charred brown */
+  --color-base-300: #3B2C18;       /* exposed wood tone */
+  --color-base-content: #F5EDD8;   /* warm off-white text */
+
+}
