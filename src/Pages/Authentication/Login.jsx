@@ -3,10 +3,13 @@ import { Link, useNavigate } from "react-router";
 import { FiEye, FiEyeOff, FiArrowRight } from "react-icons/fi";
 import useAuth from "../../Hooks/useAuth";
 import { useForm } from "react-hook-form";
+import useAxios from "../../Hooks/useAxios";
 230
 const Login = () => {
   const { loginUser, signInWithGoogle } = useAuth(); // Added signInWithGoogle
   const navigate = useNavigate();
+    const axiosInstance = useAxios();
+
   
   const {
     register,
@@ -18,21 +21,39 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleLogin = (data) => {
-    setIsLoading(true);
-    setErrorMessage("");
-    
-    loginUser(data.email, data.password)
-      .then((result) => {
-        navigate("/");
-        console.log(result.user);
-      })
-      .catch((error) => {
-        console.log(error.message);
-        setErrorMessage(error.message);
-        setIsLoading(false);
-      });
-  };
+  const handleLogin = async (data) => {
+  setIsLoading(true);
+  setErrorMessage("");
+
+  // First try staff/MySQL login
+  try {
+    const response = await axiosInstance.post("/api/staff/login", {
+      email: data.email,
+      password: data.password,
+    });
+    if (response.data.success) {
+      localStorage.setItem("staffToken", response.data.token);
+      localStorage.setItem("staffRole", response.data.staff.role);
+      localStorage.setItem("staffName", response.data.staff.name);
+      // Redirect based on role
+      if (response.data.staff.role === "chef") navigate("/staff/orders");
+      else if (response.data.staff.role === "waiter") navigate("/staff/orders");
+      return;
+    }
+  } catch {
+    // Not a staff member, try Firebase
+  }
+
+  // Then try Firebase login (for regular customers)
+  loginUser(data.email, data.password)
+    .then((result) => {
+      navigate("/");
+    })
+    .catch((error) => {
+      setErrorMessage("Invalid email or password.");
+      setIsLoading(false);
+    });
+};
 
   const handleGoogleSignIn = () => {
     setIsLoading(true);

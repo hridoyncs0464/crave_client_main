@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import useAxios from "../../hooks/useAxios";
+import useAxios from "../../Hooks/useAxios";
 import { FiArrowRight, FiCheckCircle } from "react-icons/fi";
  
 const Reservations = () => {

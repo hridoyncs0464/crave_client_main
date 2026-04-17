@@ -19,27 +19,38 @@ This will tell you exactly what's working and what's not.
 
 ---
 
-### Step 2: Fix Reservations Endpoint
+### Step 2: Fix All API Endpoints
 
 **In your backend `server.js` file:**
 
-1. Find the commented-out reservation code (look for `// app.post("/api/reservations"`)
-2. Uncomment it (remove the `//` or `/* */`)
+1. Find ALL commented-out endpoints (look for `// app.get` or `// app.post`)
+2. Uncomment them (remove the `//` or `/* */`)
 3. Save the file
 4. Restart your backend server
+
+**Key endpoints to uncomment:**
+- `GET /api/categories` - For home page categories
+- `GET /api/menu` - For menu page
+- `POST /api/reservations` - For reservations form
+- `POST /api/admin/login` - For admin login (should already work)
 
 **Example of what to uncomment:**
 ```javascript
 // BEFORE (commented out):
-// app.post("/api/reservations", async (req, res) => {
+// app.get("/api/categories", async (req, res) => {
 //   ...
 // });
 
 // AFTER (uncommented):
-app.post("/api/reservations", async (req, res) => {
+app.get("/api/categories", async (req, res) => {
   ...
 });
 ```
+
+**Pro Tip**: Use Find & Replace in your editor:
+- Find: `// app.`
+- Replace: `app.`
+- This will uncomment all endpoints at once!
 
 ---
 

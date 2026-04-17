@@ -754,7 +754,7 @@
 
 // export default Menu;   
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router";
 import useAxios from "../../Hooks/useAxios";
 import useCart from "../../Hooks/useCart";
@@ -990,7 +990,7 @@ const Menu = () => {
                             ? item.price_bdt.toFixed(0)
                             : parseInt(item.price_bdt)}
                         </span>
-
+   
                         {/* ✅ If NOT in cart → Add button */}
                         {/* ✅ If IN cart → +/- quantity controls */}
                         {!cartItem ? (

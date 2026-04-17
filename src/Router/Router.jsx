@@ -29,10 +29,10 @@ export const router = createBrowserRouter([
         path:"/register",
         Component: Register
       },
-       {
-  path: "/menu",
-  element: <Menu/>
-}, 
+      {
+        path: "/menu",
+        Component: Menu
+      }, 
 {
         path: "/about",
         Component: About,
@@ -50,9 +50,9 @@ export const router = createBrowserRouter([
         Component: OrderSuccess,
       },
       {
-  path: "/reservations",
-  Component: Reservations
-},
+        path: "/reservations",
+        Component: Reservations
+      },
 {
         path: "/admin/login",
         Component: AdminLogin

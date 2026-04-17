@@ -2,19 +2,36 @@
 
 ## Current Issues and Solutions
 
-### Issue 1: Reservations API 404 Error
-**Error**: `POST http://localhost:5000/api/reservations 404 (Not Found)`
+### Issue 1: Multiple API Endpoints Returning 404
+**Errors**: 
+- `GET http://localhost:5000/api/categories 404 (Not Found)`
+- `POST http://localhost:5000/api/reservations 404 (Not Found)`
+- Other endpoints may also be commented out
 
-**Cause**: The reservation endpoints are commented out in your backend server.js file.
+**Cause**: Multiple endpoints are commented out in your backend server.js file.
 
-**Solution**: You need to uncomment the reservation endpoints in your backend code.
+**Solution**: You need to uncomment ALL the API endpoints in your backend code.
 
 #### Steps to Fix:
 
 1. Open your backend `server.js` file
-2. Look for commented-out code related to reservations (lines with `//` or `/* */`)
-3. Find sections that look like this:
+2. Look for commented-out code (lines with `//` or `/* */`)
+3. Find and uncomment these sections:
 
+**Categories Endpoint:**
+```javascript
+// GET /api/categories - Get all categories
+// app.get("/api/categories", async (req, res) => {
+//   try {
+//     const [categories] = await db.query("SELECT * FROM categories");
+//     res.json({ success: true, data: categories });
+//   } catch (error) {
+//     res.status(500).json({ success: false, message: "Failed to fetch categories" });
+//   }
+// });
+```
+
+**Reservations Endpoint:**
 ```javascript
 // POST /api/reservations - Create new reservation
 // app.post("/api/reservations", async (req, res) => {
