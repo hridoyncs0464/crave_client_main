@@ -35,21 +35,38 @@ const Order = () => {
     setError(null);
 
     try {
-      const response = await axiosInstance.post("/api/orders", {
-        table_number: tableNumber,
-        items: cartItems,
-        total_price: cartTotal,
-      });
+      // const response = await axiosInstance.post("/api/orders/create", {
+      //   table_number: tableNumber,
+      //   items: cartItems,
+      //   total_price: cartTotal,
+      // });
 
-      if (response.data.success) {
-        clearCart();
-        // Navigate to success page with order ID
-        navigate(`/order-success?orderId=${response.data.orderId}&table=${tableNumber}`);
-      }
-    } catch (err) {
+      const response = await axiosInstance.post("/api/orders/create", {
+  table_number: tableNumber,
+  items: cartItems.map((item) => ({
+    menu_item_id: item.id,
+    item_name: item.item_name,
+    category_name: item.category_name || "",
+    quantity: item.quantity,
+    price_per_unit: Number(item.price_bdt),
+    special_notes: item.special_notes || null,
+  })),
+  customer_note: "",
+});
+
+     if (response.data.success) {
+  clearCart();
+  navigate(
+    `/order-success?orderId=${response.data.order.order_id}&table=${tableNumber}`
+  );
+}
+   
+} catch (err) {
       console.error("Order failed:", err);
       setError("Something went wrong. Please try again.");
-    } finally {
+    } 
+    
+    finally {
       setLoading(false);
     }
   };

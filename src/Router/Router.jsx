@@ -11,6 +11,8 @@ import OrderSuccess from "../Pages/Order/OrderSuccess";
 import Reservations from "../Pages/Reservations/Reservations";
 import AdminLogin from "../Pages/Authentication/AdminLogin";
 import AdminDashboard from "../Pages/Admin/AdminDashboard";
+import ChefDashboard from "../Pages/Staff/ChefDashboard";
+import WaiterDashboard from "../Pages/Staff/WaiterDashboard";
 
 export const router = createBrowserRouter([
   {
@@ -60,7 +62,12 @@ export const router = createBrowserRouter([
       {
         path: "/admin/dashboard",
         Component: AdminDashboard
-      }
+      },
+
+      // Staff dashboards
+      { path: "/staff/chef", Component: ChefDashboard },
+      { path: "/staff/waiter", Component: WaiterDashboard},
+
      
     ],
   },
