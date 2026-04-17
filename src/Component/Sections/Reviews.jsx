@@ -126,7 +126,7 @@ const Reviews = () => {
         </div>
 
         {/* Trust stats bar */}
-        <div className="mt-14 flex flex-wrap justify-center gap-8 text-center">
+        {/* <div className="mt-14 flex flex-wrap justify-center gap-8 text-center">
           {[
             { value: "5,000+", label: "Happy Guests" },
             { value: "4.9★", label: "Average Rating" },
@@ -138,7 +138,7 @@ const Reviews = () => {
               <span className="text-base-content/50 text-sm mt-1">{stat.label}</span>
             </div>
           ))}
-        </div>
+        </div> */}
 
       </div>
     </section>
