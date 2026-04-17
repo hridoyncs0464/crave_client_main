@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router";
 import useAxios from "../../Hooks/useAxios";
+import { FaBars, FaTimes } from "react-icons/fa";
 
 const getToken = () => localStorage.getItem("staffToken");
 
@@ -112,12 +113,23 @@ const NAV = [
   { id: "reservations", label: "Reservations", icon: "📅" },
 ];
 
-const Sidebar = ({ active, setActive, adminName, onLogout }) => (
-  <aside className="w-64 min-h-screen bg-gray-900 text-white flex flex-col">
-    <div className="p-6 border-b border-gray-700">
-      <h1 className="text-2xl font-black tracking-tight">🔥 Crave</h1>
-      <p className="text-gray-400 text-xs mt-1">Admin Dashboard</p>
-    </div>
+const Sidebar = ({ active, setActive, adminName, onLogout, sidebarOpen, setSidebarOpen }) => (
+  <aside className={`
+    fixed lg:relative z-50 w-64 min-h-screen bg-gray-900 text-white flex flex-col transition-transform duration-300
+    ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+  `}>
+      <div className="p-4 lg:p-6 border-b border-gray-700 flex items-center justify-between">
+        <div>
+          <h1 className="text-xl lg:text-2xl font-black tracking-tight">🔥 Crave</h1>
+          <p className="text-gray-400 text-xs mt-1">Admin Dashboard</p>
+        </div>
+        <button 
+          className="lg:hidden p-2" 
+          onClick={() => setSidebarOpen(false)}
+        >
+          <FaTimes className="w-5 h-5" />
+        </button>
+      </div>
     <nav className="flex-1 p-4 space-y-1">
       {NAV.map((item) => (
         <button
@@ -953,11 +965,125 @@ const Staff = () => {
 };
 
 // ─── Reservations Panel ───────────────────────────────────────────────────────
+// const ReservationsPanel = () => {
+//   const axiosInstance = useAxios();
+//   const [reservations, setReservations] = useState([]);
+//   const [loading, setLoading] = useState(true);
+//   const [filter, setFilter] = useState("all");
+
+//   const authConfig = { headers: { Authorization: `Bearer ${getToken()}` } };
+
+//   const load = async () => {
+//     setLoading(true);
+//     try {
+//       const params = filter !== "all" ? { status: filter } : {};
+//       const response = await axiosInstance.get("/api/reservations", {
+//         ...authConfig,
+//         params,
+//       });
+//       if (response.data.success) setReservations(response.data.data);
+//     } catch (err) {
+//       console.error("Failed to load reservations:", err.message);
+//     }
+//     setLoading(false);
+//   };
+
+//   useEffect(() => {
+//     load();
+//   }, [filter]);
+
+//   return (
+//     <div className="space-y-4">
+//       <h2 className="text-2xl font-bold text-gray-800">Reservations</h2>
+//       <div className="flex gap-2">
+//         {["all", "pending", "confirmed", "cancelled"].map((s) => (
+//           <button
+//             key={s}
+//             onClick={() => setFilter(s)}
+//             className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+//               filter === s
+//                 ? "bg-orange-500 text-white"
+//                 : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-100"
+//             }`}
+//           >
+//             {s.charAt(0).toUpperCase() + s.slice(1)}
+//           </button>
+//         ))}
+//       </div>
+//       {loading ? (
+//         <div className="text-center py-20 text-gray-400">Loading…</div>
+//       ) : (
+//         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+//           <table className="w-full text-sm">
+//             <thead className="bg-gray-50">
+//               <tr>
+//                 {["Name", "Phone", "Guests", "Date", "Time", "Status"].map(
+//                   (h) => (
+//                     <th
+//                       key={h}
+//                       className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide"
+//                     >
+//                       {h}
+//                     </th>
+//                   ),
+//                 )}
+//               </tr>
+//             </thead>
+//             <tbody>
+//               {reservations.map((r) => (
+//                 <tr
+//                   key={r.id}
+//                   className="border-t border-gray-50 hover:bg-gray-50 transition-colors"
+//                 >
+//                   <td className="px-5 py-3 font-semibold text-gray-800">
+//                     {r.customer_name}
+//                   </td>
+//                   <td className="px-5 py-3 text-gray-500">
+//                     {r.customer_phone}
+//                   </td>
+//                   <td className="px-5 py-3 text-center font-semibold">
+//                     {r.number_of_guests}
+//                   </td>
+//                   <td className="px-5 py-3 text-gray-600">
+//                     {new Date(r.reservation_date).toLocaleDateString()}
+//                   </td>
+//                   <td className="px-5 py-3 text-gray-600">
+//                     {r.reservation_time}
+//                   </td>
+//                   <td className="px-5 py-3">
+//                     <StatusBadge status={r.status} />
+//                   </td>
+//                 </tr>
+//               ))}
+//               {reservations.length === 0 && (
+//                 <tr>
+//                   <td
+//                     colSpan={6}
+//                     className="px-5 py-10 text-center text-gray-400"
+//                   >
+//                     No reservations found
+//                   </td>
+//                 </tr>
+//               )}
+//             </tbody>
+//           </table>
+//         </div>
+//       )}
+//     </div>
+//   );
+// };   
+
+// ─────────────────────────────────────────────────────────────────────────────
+// REPLACE your existing ReservationsPanel component in AdminDashboard.jsx
+// with this updated version. It adds Confirm / Cancel action buttons.
+// ─────────────────────────────────────────────────────────────────────────────
+
 const ReservationsPanel = () => {
   const axiosInstance = useAxios();
   const [reservations, setReservations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all");
+  const [actionLoading, setActionLoading] = useState(null); // id of row being updated
 
   const authConfig = { headers: { Authorization: `Bearer ${getToken()}` } };
 
@@ -980,9 +1106,42 @@ const ReservationsPanel = () => {
     load();
   }, [filter]);
 
+  const updateReservationStatus = async (id, status) => {
+    setActionLoading(id);
+    try {
+      await axiosInstance.put(
+        `/api/admin/reservations/${id}/status`,
+        { status },
+        authConfig
+      );
+      // Optimistically update the row in state
+      setReservations((prev) =>
+        prev.map((r) => (r.id === id ? { ...r, status } : r))
+      );
+    } catch (err) {
+      console.error("Failed to update reservation:", err.message);
+    }
+    setActionLoading(null);
+  };
+
+  const RESERVATION_STATUS_COLORS = {
+    pending: "bg-yellow-100 text-yellow-800",
+    confirmed: "bg-green-100 text-green-700",
+    cancelled: "bg-red-100 text-red-600",
+  };
+
   return (
     <div className="space-y-4">
-      <h2 className="text-2xl font-bold text-gray-800">Reservations</h2>
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-bold text-gray-800">Reservations</h2>
+        <button
+          onClick={load}
+          className="text-sm text-gray-500 hover:text-orange-500 transition-colors"
+        >
+          ↻ Refresh
+        </button>
+      </div>
+
       <div className="flex gap-2">
         {["all", "pending", "confirmed", "cancelled"].map((s) => (
           <button
@@ -998,6 +1157,7 @@ const ReservationsPanel = () => {
           </button>
         ))}
       </div>
+
       {loading ? (
         <div className="text-center py-20 text-gray-400">Loading…</div>
       ) : (
@@ -1005,15 +1165,15 @@ const ReservationsPanel = () => {
           <table className="w-full text-sm">
             <thead className="bg-gray-50">
               <tr>
-                {["Name", "Phone", "Guests", "Date", "Time", "Status"].map(
+                {["Name", "Phone", "Email", "Guests", "Date", "Time", "Status", "Actions"].map(
                   (h) => (
                     <th
                       key={h}
-                      className="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide"
+                      className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide"
                     >
                       {h}
                     </th>
-                  ),
+                  )
                 )}
               </tr>
             </thead>
@@ -1023,33 +1183,72 @@ const ReservationsPanel = () => {
                   key={r.id}
                   className="border-t border-gray-50 hover:bg-gray-50 transition-colors"
                 >
-                  <td className="px-5 py-3 font-semibold text-gray-800">
+                  <td className="px-4 py-3 font-semibold text-gray-800">
                     {r.customer_name}
                   </td>
-                  <td className="px-5 py-3 text-gray-500">
-                    {r.customer_phone}
-                  </td>
-                  <td className="px-5 py-3 text-center font-semibold">
-                    {r.number_of_guests}
-                  </td>
-                  <td className="px-5 py-3 text-gray-600">
+                  <td className="px-4 py-3 text-gray-500">{r.customer_phone}</td>
+                  <td className="px-4 py-3 text-gray-400 text-xs">{r.customer_email || "—"}</td>
+                  <td className="px-4 py-3 text-center font-semibold">{r.number_of_guests}</td>
+                  <td className="px-4 py-3 text-gray-600">
                     {new Date(r.reservation_date).toLocaleDateString()}
                   </td>
-                  <td className="px-5 py-3 text-gray-600">
-                    {r.reservation_time}
+                  <td className="px-4 py-3 text-gray-600">{r.reservation_time}</td>
+                  <td className="px-4 py-3">
+                    <span
+                      className={`text-xs font-semibold px-2.5 py-1 rounded-full ${
+                        RESERVATION_STATUS_COLORS[r.status] || "bg-gray-100 text-gray-500"
+                      }`}
+                    >
+                      {r.status.charAt(0).toUpperCase() + r.status.slice(1)}
+                    </span>
                   </td>
-                  <td className="px-5 py-3">
-                    <StatusBadge status={r.status} />
+                  <td className="px-4 py-3">
+                    {r.status === "pending" && (
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => updateReservationStatus(r.id, "confirmed")}
+                          disabled={actionLoading === r.id}
+                          className="text-xs bg-green-500 hover:bg-green-600 text-white font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50"
+                        >
+                          {actionLoading === r.id ? "…" : "Confirm"}
+                        </button>
+                        <button
+                          onClick={() => updateReservationStatus(r.id, "cancelled")}
+                          disabled={actionLoading === r.id}
+                          className="text-xs bg-red-100 hover:bg-red-500 hover:text-white text-red-500 font-semibold px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50"
+                        >
+                          {actionLoading === r.id ? "…" : "Cancel"}
+                        </button>
+                      </div>
+                    )}
+                    {r.status === "confirmed" && (
+                      <button
+                        onClick={() => updateReservationStatus(r.id, "cancelled")}
+                        disabled={actionLoading === r.id}
+                        className="text-xs text-red-400 hover:text-red-600 font-medium transition-colors disabled:opacity-50"
+                      >
+                        Cancel
+                      </button>
+                    )}
+                    {r.status === "cancelled" && (
+                      <button
+                        onClick={() => updateReservationStatus(r.id, "confirmed")}
+                        disabled={actionLoading === r.id}
+                        className="text-xs text-green-500 hover:text-green-700 font-medium transition-colors disabled:opacity-50"
+                      >
+                        Re-confirm
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}
               {reservations.length === 0 && (
                 <tr>
                   <td
-                    colSpan={6}
+                    colSpan={8}
                     className="px-5 py-10 text-center text-gray-400"
                   >
-                    No reservations found
+                    No {filter !== "all" ? filter : ""} reservations found
                   </td>
                 </tr>
               )}
@@ -1068,6 +1267,7 @@ const AdminDashboard = () => {
   const [active, setActive] = useState("overview");
   const [stats, setStats] = useState({});
   const [recentOrders, setRecentOrders] = useState([]);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const authConfig = { headers: { Authorization: `Bearer ${getToken()}` } };
 
@@ -1111,13 +1311,44 @@ const AdminDashboard = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-50">
+      {/* Mobile header with menu button */}
+      <div className="lg:hidden fixed top-0 left-0 right-0 h-14 bg-gray-900 z-40 flex items-center px-4">
+        <button 
+          className="p-2 text-white"
+          onClick={() => setSidebarOpen(true)}
+        >
+          <FaBars className="w-6 h-6" />
+        </button>
+        <span className="text-white font-bold ml-3">🔥 Crave Admin</span>
+      </div>
+      
+      {/* Mobile overlay to open sidebar */}
+      {!sidebarOpen && (
+        <button 
+          className="lg:hidden fixed top-16 left-0 z-30 bg-gray-800 text-white px-3 py-2 rounded-r-lg shadow-lg"
+          onClick={() => setSidebarOpen(true)}
+        >
+          ☰ Menu
+        </button>
+      )}
+      
+      {/* Mobile overlay when sidebar is open */}
+      {sidebarOpen && (
+        <div 
+          className="lg:hidden fixed inset-0 bg-black/50 z-40" 
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+      
       <Sidebar
         active={active}
-        setActive={setActive}
+        setActive={(id) => { setActive(id); setSidebarOpen(false); }}
         adminName={staffInfo?.name || "Admin"}
         onLogout={logout}
+        sidebarOpen={sidebarOpen}
+        setSidebarOpen={setSidebarOpen}
       />
-      <main className="flex-1 p-8 overflow-auto">
+      <main className="flex-1 p-4 lg:p-8 overflow-auto mt-14 lg:mt-0">
         {active === "overview" && (
           <Overview
             stats={stats}

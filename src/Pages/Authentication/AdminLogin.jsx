@@ -21,7 +21,9 @@ const AdminLogin = () => {
         localStorage.setItem("staffRole",  data.staff.role);
         localStorage.setItem("staffName",  data.staff.name);
         if (data.staff.role === "admin") navigate("/admin/dashboard");
-        else navigate("/staff/orders");
+        else if (data.staff.role === "chef") navigate("/staff/chef");
+        else if (data.staff.role === "waiter") navigate("/staff/waiter");
+        else navigate("/");
       } else {
         setError(data.message || "Invalid credentials");
       }
