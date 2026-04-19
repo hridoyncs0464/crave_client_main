@@ -1,3 +1,7 @@
+
+
+
+
 import { useRef } from "react";
 
 const features = [
@@ -170,12 +174,21 @@ const WhyChooseUs = () => {
             </div>
           ))}
         </div>
+
+       
+
+        
       </div>
     </section>
   );
 };
 
 export default WhyChooseUs;
+
+
+
+
+
 
 // import { FaFire, FaLeaf, FaClock, FaPepperHot } from "react-icons/fa";
 // import { GiChefToque } from "react-icons/gi";

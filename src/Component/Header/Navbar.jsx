@@ -252,7 +252,7 @@ const Navbar = () => {
           <span className="xs:hidden">Book</span>
         </NavLink> */}
 
-        <ReservationBell></ReservationBell>
+       { <ReservationBell></ReservationBell> }
       </div>
     </nav>
   );

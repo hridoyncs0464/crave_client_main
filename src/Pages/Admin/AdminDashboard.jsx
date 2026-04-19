@@ -1359,7 +1359,7 @@ const AdminDashboard = () => {
         {active === "orders" && <Orders />}
         {active === "menu" && <MenuManagement />}
         {active === "staff" && <Staff />}
-        {active === "reservations" && <ReservationsPanel />}
+       {active === "reservations" && <ReservationsPanel />}
       </main>
     </div>
   );
